@@ -84,20 +84,16 @@ const Card_BasketingList = (
                             </div>
                         </div>
 
-                        <div className="card-actions">
+                        <div className="card-actions justify-end mt-2">
                             <button
-                                onClick={() => set_view_PigeonData(true)}
-                                className="btn btn-primary btn-sm items-center bg-gradient-to-bl from-blue-700 via-blue-800 to-gray-900 border-0">
-                                <MdPerson className="mr-3" size={25} />
-                                Pigeon Data
+                                onClick={() => set_view_FancierData(true)}
+                                className="btn btn-square btn-sm btn-primary ">
+                                <MdPerson size={20} />
                             </button>
                             <button
                                 onClick={() => set_view_FancierData(true)}
-                                className="btn btn-primary btn-sm items-center bg-gradient-to-bl from-blue-700 via-blue-800 to-gray-900 border-0">
-                                <div className="mr-3">
-                                    <Image src="/brand_white.svg" width={25} height={25} />
-                                </div>
-                                Fancier Data
+                                className="btn btn-square btn-sm btn-primary ">
+                                <Image src="/brand_white.svg" width={20} height={20} />
                             </button>
                         </div>
                     </div>
@@ -118,42 +114,42 @@ const Card_BasketingList = (
                     })}
                 </AnimatePresence>
                 <div className="min-w-full w-fit mx-2 lg:mx-0 px-5 p-3 border-2 rounded-lg border-gray-500 border-opacity-50">
-                    <div className="flex justify-start">
-                        <div className="flex flex-col justify-center min-w-fit">
-                            <p className="text-primary font-bold">Pigeon ID</p>
+                    <div className="flex justify-start bg-base-100">
+                        <div className="flex flex-col justify-center min-w-fit ">
+                            <p className="text-primary font-bold">Pigeon ID</p> 
                             <p className="text-sm">{id}</p>
                         </div>
-                        <div className="divider divider-vertical" />
-                        <div className="flex flex-col justify-center min-w-fit">
+                        <div className="divider divider-vertical mx-5" />
+                        <div className="flex flex-col justify-center min-w-fit ">
                             <p className="text-primary font-bold">Country</p>
                             <p className="text-sm">{country}</p>
                         </div>
-                        <div className="divider divider-vertical" />
-                        <div className="flex flex-col justify-center min-w-fit">
+                        <div className="divider divider-vertical mx-5" />
+                        <div className="flex flex-col justify-center min-w-fit ">
                             <p className="text-primary font-bold">Fancier</p>
                             <p className="text-sm">{fancier}</p>
                         </div>
-                        <div className="divider divider-vertical" />
-                        <div className="flex flex-col justify-center min-w-fit">
+                        <div className="divider divider-vertical mx-5" />
+                        <div className="flex flex-col justify-center min-w-fit ">
                             <p className="text-primary font-bold">Pigeon</p>
                             <p className="text-sm">{name}</p>
                         </div>
-                        <div className="divider divider-vertical" />
-                        <div className="flex flex-col justify-center min-w-fit">
+                        <div className="divider divider-vertical mx-5" />
+                        <div className="flex flex-col justify-center min-w-fit ">
                             <p className="text-primary font-bold">Basketing Time</p>
                             <p className="text-sm">{basketTime}</p>
                         </div>
                         <div className="divider divider-vertical opacity-0 mx-10" />
-                        <div className="flex gap-2 min-w-fit ml-auto">
+                        <div className="flex gap-2 min-w-fit ml-auto items-center">
                             <button
                                 onClick={() => set_view_FancierData(true)}
-                                className="btn btn-square btn-primary border-0 shadow bg-gradient-to-tr from-blue-700 via-blue-800 to-gray-900">
-                                <MdPerson size={25} />
+                                className="btn btn-square btn-sm btn-primary ">
+                                <MdPerson size={20} />
                             </button>
                             <button
                                 onClick={() => set_view_FancierData(true)}
-                                className="btn btn-square btn-primary border-0 shadow bg-gradient-to-tr from-blue-700 via-blue-800 to-gray-900">
-                                <Image src="/brand_white.svg" width={25} height={25} />
+                                className="btn btn-square btn-sm btn-primary ">
+                                <Image src="/brand_white.svg" width={20} height={20} />
                             </button>
                         </div>
                     </div>

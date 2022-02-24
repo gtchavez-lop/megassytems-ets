@@ -3,14 +3,55 @@ import { Trans_Page, Trans_Tab } from "../../components/_Animations"
 import Head from "next/head"
 import { MdArrowBack, MdArrowDownward, MdArrowDropDown, MdInfo, MdOutlineCheckCircle, MdRssFeed, MdShoppingBasket } from "react-icons/md"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Tab_GeneralInfo from "../../components/Races/Tab_GenInfo"
 import Tab_BasketingList from "../../components/Races/Tab_BasketingList"
+import graphqlClient from '../../graphqlClient'
+import { useRouter } from 'next/router'
 
-const Slug_Race = e => {
+export const getServerSideProps = async e => {
+    const query = `
+        {
+            races  {
+                raceName
+                raceSlug
+                raceStatus
+                pigeonsArrived
+                distance
+                releasePoint
+                releaseTime
+                participatingPigeons {
+                    pigeonPhysicalId
+                    fancier {
+                    fancierName
+                    }
+                }
+                participatingLofts {
+                    loftName
+                }
+            }
+        }
+    `
+    const { races } = await graphqlClient.request(query)
+    return {
+        props: {
+            races
+        }
+    }
+}
 
-    // tabs
+const Slug_Race = ({ races }) => {
+
     const [ActiveTab, SetTab] = useState(1)
+    const [currentRace, setCurrentRace] = useState({})
+    const [loaded, setLoaded] = useState(false)
+    const { raceID } = useRouter().query
+
+    useEffect(() => {
+        const currentRace = races.filter((a) => (a.raceSlug == raceID))[0]
+        setCurrentRace(currentRace)
+        setLoaded(true)
+    }, [])
 
     return (
         <>
@@ -27,7 +68,12 @@ const Slug_Race = e => {
                             <MdArrowBack size={25} />
                         </button>
                     </Link>
-                    <p className="text-3xl">Race Detail</p>
+                    <p className="text-3xl">
+                        {currentRace.raceName}
+                        {currentRace.raceStatus ? (<span className="badge badge-success ml-2 -translate-y-4">Completed</span>)
+                            : (<span className="badge badge-warning ml-2 -translate-y-4">Running</span>)
+                        }
+                    </p>
                 </div>
 
                 {/* tabs mobile */}
@@ -86,23 +132,23 @@ const Slug_Race = e => {
                 <div className="divider" />
                 {/* race detail */}
                 <AnimatePresence>
-                    {ActiveTab === 1 && (
+                    {(ActiveTab === 1 && loaded) && (
                         <motion.div
                             variants={Trans_Tab} layout
                             initial='initial' animate='animate'
                         >
-                            <Tab_GeneralInfo />
+                            <Tab_GeneralInfo data={currentRace} />
                         </motion.div>
                     )}
                 </AnimatePresence>
 
                 <AnimatePresence>
-                    {ActiveTab === 2 && (
+                    {(ActiveTab === 2 && loaded) && (
                         <motion.div
                             variants={Trans_Tab} layout
                             initial='initial' animate='animate'
                         >
-                            <Tab_BasketingList />
+                            <Tab_BasketingList data={currentRace} />
                         </motion.div>
                     )}
                 </AnimatePresence>

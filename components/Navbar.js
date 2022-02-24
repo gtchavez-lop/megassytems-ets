@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AnimatePresence } from 'framer-motion'
 import { MdLanguage, MdLightMode, MdMenu, MdOutlineClose, MdOutlinePhone, MdOutlineContactSupport } from 'react-icons/md'
 
@@ -9,12 +9,21 @@ import SideMenu from './SideMenu'
 const Navbar = e => {
     const [_sideMenuOpen, _setSideMenuOpen] = useState(false)
 
+    // get scroll position
+    const [scrollPos, setScrollPos] = useState(0)
+    const handleScroll = e => {
+        setScrollPos(Math.floor(window.scrollY))
+    }
+    useEffect(() => {
+        window.onscroll = handleScroll
+    })
+
     return (
         <>
             <AnimatePresence exitBeforeEnter>
                 {_sideMenuOpen ? <SideMenu closeHandler={() => _setSideMenuOpen(false)} /> : null}
             </AnimatePresence>
-            <div className="fixed w-full top-0 left-0 z-50 navbar px-5 lg:px-20 shadow-lg bg-base-300 text-base-content">
+            <div className={`fixed w-full top-0 left-0 z-50 transition-all navbar px-5 lg:px-20 text-base-content ${scrollPos > 50 ? 'bg-base-200' : ''}`}>
                 <div className="navbar-start">
                     <Link href="/">
                         <div className="hidden lg:flex items-center cursor-pointer">
@@ -66,7 +75,7 @@ const Navbar = e => {
                                 </button>
                             </div>
                             <div data-tip="Color Scheme" className="tooltip tooltip-bottom tooltip-secondary">
-                                <button className="btn btn-ghost btn-sm btn-circle">
+                                <button data-toggle-theme="corporate,business" className="btn btn-ghost btn-sm btn-circle">
                                     <MdLightMode size={18} />
                                 </button>
                             </div>
@@ -88,8 +97,8 @@ const Navbar = e => {
                                 <MdLanguage size={18} />
                             </button>
                         </div>
-                        <div data-tip="Color Scheme" className="tooltip tooltip-left tooltip-secondary">
-                            <button className="btn btn-ghost btn-sm btn-circle">
+                        <div odata-tip="Color Scheme" className="tooltip tooltip-left tooltip-secondary">
+                            <button data-toggle-theme="corporate,business" className="btn btn-ghost btn-sm btn-circle">
                                 <MdLightMode size={18} />
                             </button>
                         </div>

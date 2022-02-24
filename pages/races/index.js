@@ -1,13 +1,49 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion"
 import Head from "next/head"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import { request } from "graphql-request"
+
 import { MdGridView, MdList, MdViewList } from "react-icons/md"
 import Card_Race from "../../components/Races/Card_Race"
 import { Trans_Page, Trans_Tab } from "../../components/_Animations"
+import graphqlClient from "../../graphqlClient"
 
-const Page_Races = e => {
+export const getServerSideProps = async () => {
+    const query = `
+        {
+            races {
+                raceName
+                raceSlug
+                raceStatus
+                pigeonsArrived
+                id
+                participatingLofts {
+                    loftName
+                }
+            }
+        }
+    `
+
+    const { races } = await graphqlClient.request(query)
+
+    return {
+        props: {
+            races
+        }
+    }
+}
+
+const Page_Races = ({ races }) => {
 
     const [_view_displayType, set_view_displayType] = useState('list')
+    const [loaded, setLoaded] = useState(false)
+
+    useEffect(() => {
+        if (Object.keys(races).length > 0 && races.constructor === Object) {
+            setLoaded(true)
+        }
+    }, [])
 
     return (
         <>
@@ -37,16 +73,14 @@ const Page_Races = e => {
                                 </select>
                                 <button
                                     onClick={() => set_view_displayType(_view_displayType === 'grid' ? 'list' : 'grid')}
-                                    className="btn btn-ghost btn-md lg:btn-sm gap-2">
+                                    className="btn btn-ghost btn-square btn-md lg:btn-sm gap-2">
                                     {_view_displayType === 'grid' ? (
                                         <>
-                                            <MdGridView size={25} />
-                                            <span className="hidden lg:block">Grid View</span>
+                                            <MdGridView size={20} />
                                         </>
                                     ) : (
                                         <>
-                                            <MdList size={25} />
-                                            <span className="hidden lg:block">List View</span>
+                                            <MdList size={20} />
                                         </>
                                     )}
                                 </button>
@@ -61,11 +95,9 @@ const Page_Races = e => {
                                 layout
                                 variants={Trans_Tab} initial='initial' animate='animate'
                                 className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <Card_Race raceID={1000} viewType="card" />
-                                <Card_Race raceID={1000} viewType="card" />
-                                <Card_Race raceID={1000} viewType="card" />
-                                <Card_Race raceID={1000} viewType="card" />
-                                <Card_Race raceID={1000} viewType="card" />
+                                {Object.keys(races).length > 0 && races.map(race => (
+                                    <Card_Race key={race.id} raceID={race.id} data={race} viewType="card" />
+                                ))}
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -89,11 +121,9 @@ const Page_Races = e => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <Card_Race raceID={1000} viewType="list" />
-                                        <Card_Race raceID={1000} viewType="list" />
-                                        <Card_Race raceID={1000} viewType="list" />
-                                        <Card_Race raceID={1000} viewType="list" />
-                                        <Card_Race raceID={1000} viewType="list" />
+                                        {Object.keys(races).length > 0 && races.map(race => (
+                                            <Card_Race key={race.id} raceID={race.id} data={race} viewType="list" />
+                                        ))}
                                     </tbody>
                                 </table>
                             </motion.div>

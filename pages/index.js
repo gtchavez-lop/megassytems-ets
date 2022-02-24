@@ -2,7 +2,9 @@ import Head from "next/head"
 import { motion } from "framer-motion"
 import { Trans_Page } from "../components/_Animations"
 
-const IndexPage = e => {
+const IndexPage = ({ }) => {
+
+
   return (
     <>
       <Head>

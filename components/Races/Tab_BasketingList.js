@@ -4,15 +4,16 @@ import { MdGridView, MdList } from "react-icons/md"
 import { Trans_Tab } from '../_Animations'
 import Card_BasketingList from "./Card_BasketingList"
 
-const Tab_BasketingList = e => {
+const Tab_BasketingList = ({ data }) => {
 
+    const [pigeonList, setPigeonList] = useState({})
     const [_view_DisplayType, _set_view_DisplayType] = useState('list')
 
     return (
         <>
             {/* header */}
             <div className="flex flex-col lg:flex-row justify-between align-middle">
-                <p className="text-3xl text-center lg:text-left">Basketing List</p>
+                <p className="text-3xl text-center lg:text-left">Registered Pigeons</p>
                 <div className="col-span-2 grid grid-cols-1 lg:grid-cols-2 mt-10 lg:mt-0 gap-2">
                     <input className="input input-bordered input-md lg:input-sm" type='text' placeholder="Search in this list" />
 
